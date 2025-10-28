@@ -28,4 +28,14 @@ public class Shield {
         String info;
         return info = ("S["+ protection + "," + uses + "]");
     }
+    
+    
+    /*
+    La forma correcta de llamar a un método static desde otra 
+    clase es usar el nombre de la clase seguido de un punto y el 
+    nombre del método, como en NombreDeLaClase.nombreDelMetodo(). No es necesario crear una instancia de la clase para llamar a un método static. 
+    */
+    public boolean discard(){
+        return Dice.discardElement(uses);
+    }
 }

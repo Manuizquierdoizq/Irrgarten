@@ -23,37 +23,37 @@ public class Dice {
     private static Random generator = new Random();
     
     public static int randomPos(int max){
-        int pos=generator.nextInt(max);
-        return pos;
+        return generator.nextInt(max);
     }
     
     public static int whoStarts(int nplayers){
-        int jug=generator.nextInt(nplayers);
-        return jug;
+        return generator.nextInt(nplayers);
     }
     
     public static float randomIntelligence(){
-        return generator.nextInt()*MAX_INTELLIGENCE;
+        return generator.nextFloat()*MAX_INTELLIGENCE;
     }
     
     public static float randomStrength(){
-        return generator.nextInt()*MAX_STRENGTH;
+        return generator.nextFloat()*MAX_STRENGTH;
     }
     
     public static boolean resurrectPlayer(){
-        return generator.nextFloat() < 0.3f;
+        return generator.nextFloat() < RESURRECT_PROB;
     }
     
+    //Genera un número entero en el rango [0, MAX], se debe indicar el +1 ya 
+    //que sino sera [0,MAX)á
     public static int weaponsReward(){
-        return generator.nextInt(WEAPONS_REWARD);
+        return generator.nextInt(WEAPONS_REWARD+1);
     }
     
     public static int shieldsReward(){
-        return generator.nextInt(SHIELDS_REWARD);
+        return generator.nextInt(SHIELDS_REWARD+1);
     }
     
     public static int healthReward(){
-        return generator.nextInt(HEALTH_REWARD);
+        return generator.nextInt(HEALTH_REWARD+1);
     }
     
     public static float weaponPower(){
@@ -65,7 +65,7 @@ public class Dice {
     }
     
     public static int usesLeft(){
-        return generator.nextInt(MAX_USES);
+        return generator.nextInt(MAX_USES+1);
     }
     
     public static float intensity(float competence){
@@ -73,10 +73,7 @@ public class Dice {
     }
     
     public static boolean discardElement(int usesLeft){
-        float prob = (MAX_USES-usesLeft)/MAX_USES;
+        float prob = (float)(MAX_USES-usesLeft)/MAX_USES;
         return generator.nextFloat() < prob;
     }
-    
-    
-    
 }

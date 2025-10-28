@@ -12,11 +12,7 @@ import java.util.Arrays;
  */
 public class TestP1 {
     public static void main(String[] args) {
-        
-        
-        
         // --------- Weapon y Shield (uso básico) ---------
-        System.out.println("=== Weapon / Shield ===");
         Weapon w = new Weapon(1.5f, 3);   // (power, uses)
         Shield s = new Shield(2.0f, 2);   // (power, uses)
 
@@ -47,27 +43,44 @@ public class TestP1 {
                 "Inicio del juego"
         );
         System.out.println("currentPlayer=" + gs.getCurrentPlayer() +
-                ", winner=" + gs.getWinner() +
                 ", labyrinth=" + gs.getLabyrinth());
 
-        // --------- Dice (sin usar constantes internas) ---------
-        System.out.println("\n=== Dice ===");
-        System.out.println("whoStarts(4):        " + Dice.whoStarts(4));
-        System.out.println("randomPos(10):       " + Dice.randomPos(10));
-        System.out.println("randomIntelligence(): " + Dice.randomIntelligence());
-        System.out.println("randomStrength():     " + Dice.randomStrength());
-        System.out.println("resurrectPlayer():    " + Dice.resurrectPlayer());
-        System.out.println("weaponsReward():      " + Dice.weaponsReward());
-        System.out.println("shieldsReward():      " + Dice.shieldsReward());
-        System.out.println("healthReward():       " + Dice.healthReward());
+        
+        // Ejemplo de cómo estructurarlo:
+        int resurrectCount = 0;
+        System.out.println("\n=== Probando Dice 100 veces ===");
 
-        int uses = Dice.usesLeft();
-        System.out.println("usesLeft():           " + uses);
-        System.out.println("discardElement(uses): " + Dice.discardElement(uses));
+        for (int i = 0; i < 100; i++) {
+            // --------- Dice (sin usar constantes internas) ---------
+            //System.out.println("\n=== Dice ===");
+            //System.out.println("whoStarts(4):        " + Dice.whoStarts(4));
+            //System.out.println("randomPos(10):       " + Dice.randomPos(10));
+            //System.out.println("randomIntelligence(): " + Dice.randomIntelligence());
+            //System.out.println("randomStrength():     " + Dice.randomStrength());
+            //System.out.println("resurrectPlayer():    " + Dice.resurrectPlayer());
+            //System.out.println("weaponsReward():      " + Dice.weaponsReward());
+            //System.out.println("shieldsReward():      " + Dice.shieldsReward());
+            //System.out.println("healthReward():       " + Dice.healthReward());
+            //
+            //int uses = Dice.usesLeft();
+            //System.out.println("usesLeft():           " + uses);
+            //System.out.println("discardElement(uses): " + Dice.discardElement(uses));
+            //
+            //System.out.println("weaponPower():        " + Dice.weaponPower());
+            //System.out.println("shieldPower():        " + Dice.shieldPower());
+            //System.out.println("intensity(5.0f):      " + Dice.intensity(5.0f));
+            //
+            //System.out.println("whoStarts(4): " + Dice.whoStarts(4));
+            //System.out.println("randomIntelligence(): " + Dice.randomIntelligence());
 
-        System.out.println("weaponPower():        " + Dice.weaponPower());
-        System.out.println("shieldPower():        " + Dice.shieldPower());
-        System.out.println("intensity(5.0f):      " + Dice.intensity(5.0f));
+            // Para el booleano:
+            if (Dice.resurrectPlayer()) {
+                resurrectCount++;
+            }
+        }
+
+        // Al final del bucle, imprime el resultado del contador:
+        System.out.println("Veces resucitado (de 100): " + resurrectCount);
     }
         
         

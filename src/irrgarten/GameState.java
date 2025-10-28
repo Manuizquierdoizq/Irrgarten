@@ -11,15 +11,15 @@ package irrgarten;
 public class GameState {
     private String labyrinth;
     private String players;
-    private String monster;
+    private String monsters;
     private int currentPlayer;
     private boolean winner;
     private String log;
 
-    public GameState(String labyrinth, String players, String monster, int currentPlayer, boolean winner, String log) {
+    public GameState(String labyrinth, String players, String monsters, int currentPlayer, boolean winner, String log) {
         this.labyrinth = labyrinth;
         this.players = players;
-        this.monster = monster;
+        this.monsters = monsters;
         this.currentPlayer = currentPlayer;
         this.winner = winner;
         this.log = log;
@@ -33,8 +33,8 @@ public class GameState {
         return players;
     }
 
-    public String getMonster() {
-        return monster;
+    public String getMonsters() {
+        return monsters;
     }
 
     public int getCurrentPlayer() {

@@ -28,4 +28,8 @@ public class Weapon {
         String info;
         return info = ("W["+ power + "," + uses + "]");
     }
+    
+    public boolean discard(){
+        return Dice.discardElement(uses);
+    }
 }
