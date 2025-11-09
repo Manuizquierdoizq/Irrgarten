@@ -43,7 +43,7 @@ public class Dice {
     }
     
     //Genera un número entero en el rango [0, MAX], se debe indicar el +1 ya 
-    //que sino sera [0,MAX)á
+    //que sino sera [0,MAX)
     public static int weaponsReward(){
         return generator.nextInt(WEAPONS_REWARD+1);
     }

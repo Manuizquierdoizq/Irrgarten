@@ -12,6 +12,9 @@ import java.util.Arrays;
  */
 public class TestP1 {
     public static void main(String[] args) {
+        
+        // --------- P1 ---------
+        
         // --------- Weapon y Shield (uso básico) ---------
         Weapon w = new Weapon(1.5f, 3);   // (power, uses)
         Shield s = new Shield(2.0f, 2);   // (power, uses)
@@ -82,7 +85,4 @@ public class TestP1 {
         // Al final del bucle, imprime el resultado del contador:
         System.out.println("Veces resucitado (de 100): " + resurrectCount);
     }
-        
-        
-
 }
