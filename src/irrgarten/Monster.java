@@ -31,21 +31,34 @@ public class Monster {
     public boolean dead(){
         return health<=0 ? true : false;
     }
+    
     public float attack(){
         return Dice.intensity(strength);
     }
+    
     public boolean defend(float receivedAttack){
-        throw new UnsupportedOperationException();
+        boolean isDead = dead();
+        if(!isDead) {
+            float defensiveEnergy = Dice.intensity(intelligence);
+            if(defensiveEnergy < receivedAttack){
+                gotWounded();
+                isDead = dead();
+            }
+        }
+        return isDead;
     }
+    
     public void setPos(int row, int col){
         this.row = row;
         this.col = col;
     }
+    
     public String toString(){
-        return "Name = " + name + " ,intelligence = " + intelligence + 
+        return "\n\tName = " + name + " ,intelligence = " + intelligence + 
                 " ,strength = " + strength + " ,health = " + health + " ,row = " +
-                row + " ,col" + col;
+                row + " ,col" + col + "\n\t";
     }
+    
     private void gotWounded(){
         health--;
     }

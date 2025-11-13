@@ -38,8 +38,8 @@ public class Game {
         this.labyrinth = new Labyrinth(nRows, nCols, exitRow, exitCol);
         
         this.log = ""; // Empezamos con un log vacío
-        //this.configureLabyrinth(); // Llama al método privado de esta clase
-//        this.labyrinth.spreadPlayers(this.players);
+        this.configureLabyrinth();
+        this.labyrinth.spreadPlayers(this.players);
     }
     
     public boolean finished(){
@@ -47,7 +47,31 @@ public class Game {
     }
     
     public boolean nextStep(Directions preferredDirection){
-        throw new UnsupportedOperationException();
+        log = "";
+        boolean dead = currentPlayer.dead();
+        if(!dead){
+            Directions direction = actualDirection(preferredDirection);
+            if(direction != preferredDirection){
+                logPlayerNoOrders();
+            }
+            Monster monster = labyrinth.putPlayer(direction, currentPlayer);
+            
+            if(monster==null){
+                logNoMonster();
+            } else {
+                GameCharacter winner = combat(monster);
+                manageReward(winner);
+            }
+        } else {
+            manageResurrection();
+        }
+        
+        boolean endGame = finished();
+        
+        if(!endGame){
+            nextPlayer();
+        }
+        return endGame;
     }
     
     public GameState getGameState(){
@@ -58,7 +82,16 @@ public class Game {
     }
     
     private void configureLabyrinth(){
-        throw new UnsupportedOperationException();
+        this.labyrinth.addBlock(Orientation.VERTICAL, 2, 3, 4);
+        this.labyrinth.addBlock(Orientation.HORIZONTAL, 5, 0, 5);
+        
+        Monster m1 = new Monster("Monstruo 1", Dice.randomIntelligence(), Dice.randomStrength());
+        Monster m2 = new Monster("Monstruo 2", Dice.randomIntelligence(), Dice.randomStrength());
+        
+        this.labyrinth.addMonster(1, 2, m1);
+        this.labyrinth.addMonster(5, 8, m2);
+        this.monsters.add(m1);
+        this.monsters.add(m2);
     }
     
     private void nextPlayer(){
@@ -68,19 +101,52 @@ public class Game {
     }
     
     private Directions actualDirection(Directions preferredDirection){
-        throw new UnsupportedOperationException();
+        int currentRow = currentPlayer.getRow();
+        int currentCol = currentPlayer.getCol();
+        ArrayList<Directions> validmoves = labyrinth.validMoves(currentRow, currentCol);
+        Directions output = currentPlayer.move(preferredDirection, validmoves);
+        return output;
     }
     
     private GameCharacter combat(Monster monster){
-        throw new UnsupportedOperationException();
+        int rounds = 0;
+        GameCharacter winner = GameCharacter.PLAYER;
+        float playerAttack = currentPlayer.attack();
+        boolean lose = monster.defend(playerAttack);
+        
+        while(!lose && rounds<MAX_ROUNDS){
+            winner = GameCharacter.MONSTER;
+            rounds++;
+            
+            float monsterAttack = monster.attack();
+            lose = currentPlayer.defend(monsterAttack);
+            if(!lose){
+                float newplayerAttack = currentPlayer.attack();
+                winner = GameCharacter.PLAYER;
+                lose = monster.defend(newplayerAttack);
+            }
+        }
+        logRounds(rounds, MAX_ROUNDS);
+        return winner;
     }
     
     private void manageReward(GameCharacter winner){
-        throw new UnsupportedOperationException();
+        if(winner == GameCharacter.PLAYER){
+            currentPlayer.receiveReward();
+            logPlayerWon();
+        } else {
+            logMonsterWon();
+        }
     }
     
     private void manageResurrection(){
-        throw new UnsupportedOperationException();
+        boolean resurrect = Dice.resurrectPlayer();
+        if(resurrect){
+            currentPlayer.resurrect();
+            logResurrected();
+        } else {
+            logPlayerSkipTurn();
+        }
     }
     
     private void logPlayerWon(){

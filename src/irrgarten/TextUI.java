@@ -50,7 +50,21 @@ public class TextUI {
         return direction;
     }
     
-    public void showGame(GameState gameState) {   
+    public void showGame(GameState gameState) {
+        System.out.println("--- MAPA DEL LABERINTO ---");
+        System.out.println(gameState.getLabyrinth());
+        
+        System.out.println("--- ESTADO ---");
+        System.out.println("Turno del jugador: " + gameState.getCurrentPlayer());
+        System.out.println("¿El juego ha terminado? " + gameState.isWinner());
+        
+        System.out.println("Jugadores: " + gameState.getPlayers());
+        System.out.println("Monstruos: " + gameState.getMonsters());
+        
+        System.out.println("--- LOG ---");
+        System.out.println(gameState.getLog());
+        
+
     }
     
 }
