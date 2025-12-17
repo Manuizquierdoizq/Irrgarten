@@ -143,6 +143,8 @@ public class Game {
         boolean resurrect = Dice.resurrectPlayer();
         if(resurrect){
             currentPlayer.resurrect();
+            FuzzyPlayer fuzzy = new FuzzyPlayer(currentPlayer);
+            currentPlayer = fuzzy;
             logResurrected();
         } else {
             logPlayerSkipTurn();
@@ -174,6 +176,6 @@ public class Game {
     }
     
     private void logRounds(int rounds, int max){
-        log += " Se han producido el maximo de rondas permitidas en el combate.\n";
+        log += "Se han producido un total de " + rounds + " de un maximo de " + max + " rondas\n";
     }
 }

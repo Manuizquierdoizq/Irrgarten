@@ -8,28 +8,22 @@ package irrgarten;
  *
  * @author manu
  */
-public class Weapon {
-    private float power;
-    private int uses;
+public class Weapon extends CombatElement {
     
     public Weapon(float power, int uses){
-        this.power=power;
-        this.uses=uses;
+        super(power,uses);
     }
     
     public float attack(){
-        if(uses>0){
-            uses--;
-            return power;
-        } else return 0;
+        return super.produceEffect();
     }
     
+    // Este método ya ha sido declarado en su clase padre por lo que
+    // debo poner override para que se sobreescriba y si dentro hago
+    // super.toString() llamo al metodo de la clase padre.
+    
+    @Override
     public String toString(){
-        String info;
-        return info = ("W["+ power + "," + uses + "]");
-    }
-    
-    public boolean discard(){
-        return Dice.discardElement(uses);
+        return "W["+ super.toString() + "]" + ",";
     }
 }

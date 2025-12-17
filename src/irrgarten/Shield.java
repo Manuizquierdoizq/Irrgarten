@@ -8,34 +8,18 @@ package irrgarten;
  *
  * @author manu
  */
-public class Shield {
-    private float protection;
-    private int uses;
-
+public class Shield extends CombatElement{
+    
     public Shield(float protection, int uses) {
-        this.protection = protection;
-        this.uses = uses;
+        super(protection,uses);
     }
     
     public float protect(){
-        if(uses > 0){
-            uses--;
-            return protection;
-        } else return 0;
+        return super.produceEffect();
     }
     
+    @Override
     public String toString(){
-        String info;
-        return info = ("S["+ protection + "," + uses + "]");
-    }
-    
-    
-    /*
-    La forma correcta de llamar a un método static desde otra 
-    clase es usar el nombre de la clase seguido de un punto y el 
-    nombre del método, como en NombreDeLaClase.nombreDelMetodo(). No es necesario crear una instancia de la clase para llamar a un método static. 
-    */
-    public boolean discard(){
-        return Dice.discardElement(uses);
-    }
+        return "S["+ super.toString() + "]" + ",";
+    }    
 }

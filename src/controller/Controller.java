@@ -1,16 +1,16 @@
-package irrgarten.controller;
+package controller;
 
 import irrgarten.Directions;
 import irrgarten.Game;
-import irrgarten.UI.TextUI;
-
+// import UI.TextUI; Para la P5 usaremos interfaz grafica
+import UI.UI;
 
 public class Controller {
     
     private Game game;
-    private TextUI view;
-    
-    public Controller(Game game, TextUI view) {
+    private UI view;
+
+    public Controller(Game game, UI view) {
         this.game = game;
         this.view = view;
     }
@@ -22,7 +22,8 @@ public class Controller {
             Directions direction = view.nextMove(); 
             endOfGame = game.nextStep(direction);
         }
-      view.showGame(game.getGameState());        
+    view.showGame(game.getGameState());    
+    System.out.println("El ganador es el jugador " + game.getGameState().getCurrentPlayer());
     }
     
 }

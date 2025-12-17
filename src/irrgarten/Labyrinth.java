@@ -58,14 +58,15 @@ public class Labyrinth {
     }
 
     public String toString() {
-        StringBuilder str = new StringBuilder();
+        String lab = "";
         for (int i = 0; i < nRows; i++) {
             for (int j = 0; j < nCols; j++) {
-                str.append(this.labyrinth[i][j]);
+                lab += labyrinth[i][j];
+                lab += " ";
             }
-            str.append("\n");
+            lab +=("\n");
         }
-        return str.toString();
+        return lab;
     }
 
     public void addMonster(int row, int col, Monster monster) {

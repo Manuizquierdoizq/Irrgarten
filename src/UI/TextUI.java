@@ -1,12 +1,11 @@
-
-package irrgarten.UI;
+package UI;
 
 import irrgarten.Directions;
 import irrgarten.GameState;
 import java.util.Scanner;
 
 
-public class TextUI {
+public class TextUI implements UI {
     
     private static Scanner in = new Scanner(System.in);
     
@@ -15,7 +14,6 @@ public class TextUI {
         return s.charAt(0);
     }
     
-
     public Directions nextMove() {
         System.out.print("Where? ");
         
@@ -50,6 +48,8 @@ public class TextUI {
         return direction;
     }
     
+    @Override
+// P1,2,3,4 showGame
     public void showGame(GameState gameState) {
         System.out.println("--- MAPA DEL LABERINTO ---");
         System.out.println(gameState.getLabyrinth());
@@ -66,5 +66,4 @@ public class TextUI {
         
 
     }
-    
 }

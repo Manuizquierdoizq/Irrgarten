@@ -11,61 +11,49 @@ import java.util.Iterator;
  *
  * @author manu
  */
-public class Player {
+public class Player extends LabyrinthCharacter{
     private static final int MAX_WEAPONS = 2;
     private static final int MAX_SHIELDS = 3;
     private static final int INITIAL_HEALTH = 10;
     private static final int HITS2LOSE = 3;
-    private String name;
     private char number;
-    private float intelligence;
-    private float strength;
-    private float health;
-    private int row;
-    private int col;
     private int consecutiveHits=0;
     ArrayList<Weapon> weapons;
     ArrayList<Shield> shields;
+    private ShieldCardDeck shieldCardDeck;
+    private WeaponCardDeck weaponCardDeck;
+    
     
     public Player(char number, float intelligence, float strength){
-        this.name="Player#"+number;
+        super("Player#"+number,intelligence,strength,INITIAL_HEALTH);
         this.number=number;
-        this.intelligence=intelligence;
-        this.strength=strength;
-        this.health=INITIAL_HEALTH;
-        this.row=-1;
-        this.col=-1;
         this.weapons = new ArrayList<>();
         this.shields = new ArrayList<>();
+        
+        this.shieldCardDeck = new ShieldCardDeck();
+        shieldCardDeck.addCards();
+        this.weaponCardDeck = new WeaponCardDeck();
+        weaponCardDeck.addCards();   
+    }
+        
+    public Player(Player other){
+        super(other);
+        this.number=other.number;
+        this.weapons = other.weapons;
+        this.shields = other.shields;
+        shieldCardDeck = other.shieldCardDeck;
+        weaponCardDeck = other.weaponCardDeck;
     }
     
     public void resurrect(){
         this.shields.clear();
         this.weapons.clear();
-        this.health=INITIAL_HEALTH;
+        setHealth(INITIAL_HEALTH);
         this.consecutiveHits=0;
     }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }
-    
     
     public char getNumber() {
         return number;
-    }
-    
-    public void setPos(int row, int col){
-        this.row=row;
-        this.col=col;
-    }
-    
-    public boolean dead(){
-        return health<=0;
     }
     
     public Directions move(Directions direction, ArrayList <Directions> validMoves){
@@ -78,11 +66,13 @@ public class Player {
             return direction;
         }
     }
-     
+    
+    @Override
     public float attack(){
-        return strength+sumWeapons();
+        return getStrength()+sumWeapons();
     }
     
+    @Override
     public boolean defend(float receivedAttack){
         return manageHit(receivedAttack);
     }
@@ -92,31 +82,28 @@ public class Player {
         int sReward = Dice.shieldsReward();
         
         for (int i=0;i<wReward;i++){
-            Weapon wnew = this.newWeapon();
+            Weapon wnew = weaponCardDeck.nextCard();
             receiveWeapon(wnew);
         }
         for (int i=0;i<sReward;i++){
-            Shield snew = this.newShield();
+            Shield snew = shieldCardDeck.nextCard();
             receiveShield(snew);
         }
         int extraHealth = Dice.healthReward();
-        health+=extraHealth;
+        setHealth(getHealth()+extraHealth);
     }
     
+    @Override
     public String toString(){
-        return "\n\tName = " + name + " ,number = " + number + " ,intelligence = " +
-                intelligence + " ,strength = " + strength + " ,health =" + health +
-                " ,row = " + row + " ,col = " + col + " ,consecutiveHits= " + 
-                consecutiveHits + "\n";
+        return super.toString() + " Weapons: " +weapons.toString() + " Shields: " + shields.toString();
     }
     
         private void receiveWeapon(Weapon w){
-            Iterator<Weapon> it = this.weapons.iterator();
-            while(it.hasNext()){
-               Weapon wi = it.next();
-               if(wi.discard()){
-                   it.remove();
-               }
+            for(int i=weapons.size()-1;i>=0;i--){
+                boolean discard = weapons.get(i).discard();
+                if(discard){
+                    weapons.remove(weapons.get(i));
+                }
             }
             int size = weapons.size();
             if(size<MAX_WEAPONS){
@@ -125,17 +112,16 @@ public class Player {
         }
     
     private void receiveShield(Shield s){
-            Iterator<Shield> it = this.shields.iterator();
-            while(it.hasNext()){
-               Shield si = it.next();
-               if(si.discard()){
-                   it.remove();
-               }
+        for(int i=shields.size()-1;i>=0;i--){
+            boolean discard = shields.get(i).discard();
+            if(discard){
+                shields.remove(shields.get(i));
             }
-            int size = shields.size();
-            if(size<MAX_SHIELDS){
-                shields.add(s);
-            }
+        }
+        int size = shields.size();
+        if(size<MAX_SHIELDS){
+            shields.add(s);
+        }
     }
     
     private Weapon newWeapon(){
@@ -152,17 +138,24 @@ public class Player {
         return shield;
     }
     
-    private float sumWeapons(){
+    protected float sumWeapons(){
         float sum = 0.0f;
         
         for (Weapon w : this.weapons) {
             sum += w.attack();
         }
         
+        /*
+        Es lo mismo que 
+                            float suma = (float) 0.0;
+                            for (int i=0; i<weapons.size(); i++){
+                            suma += weapons.get(i).attack();
+        */
+        
         return sum;
     }
     
-    private float sumShields() {
+    protected float sumShields() {
         float sum = 0.0f;
         
         for (Shield s : this.shields) {
@@ -172,8 +165,8 @@ public class Player {
         return sum;
     }
     
-    private float defensiveEnergy(){
-        return intelligence + sumShields();
+    protected float defensiveEnergy(){
+        return getIntelligence() + sumShields();
     }
     
     private boolean manageHit(float receivedAttack) {
@@ -194,10 +187,6 @@ public class Player {
     
     private void resetHits(){
         consecutiveHits=0;
-    }
-    
-    private void gotWounded(){
-        health--;
     }
     
     private void incConsecutiveHits(){
